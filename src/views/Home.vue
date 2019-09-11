@@ -1,13 +1,23 @@
 <template>
-  <HelloWorld />
+  <div>
+    <v-container>
+      <h1>Tutorial</h1>
+      <span>{{nome}}</span>
+    </v-container>
+  </div>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
-
 export default {
-  components: {
-    HelloWorld,
+  data: () => {
+    return {
+      nome: ""
+    };
   },
+  computed: {
+    nomeUsuario() {
+      return this.$store.state.cadastro.nome;
+    }
+  }
 };
 </script>

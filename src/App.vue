@@ -1,36 +1,40 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
-
+    <div v-show="mostrarMenu">
+      <v-app-bar app>
+        <v-toolbar-title class="headline">
+          <router-link class="mr-4" to="/tutorial">Tutorial</router-link>
+          <router-link to="/duvida">Duvidas</router-link>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn @click="sair">
+          <span class="mr-2">Sair</span>
+        </v-btn>
+      </v-app-bar>
+    </div>
     <v-content>
-      <HelloWorld/>
+      <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-  },
+  name: "App",
+  components: {},
   data: () => ({
     //
   }),
+  computed: {
+    mostrarMenu() {
+      return this.$store.state.login.loginSuccessful;
+    }
+  },
+  methods: {
+    sair() {
+      localStorage.removeItem("dev4jobsForum");
+      this.$router.push("/");
+    }
+  }
 };
 </script>
