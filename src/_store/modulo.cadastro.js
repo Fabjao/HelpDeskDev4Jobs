@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-
+const url = process.env.VUE_APP_URL;
 export const cadastro = {
     namespaced: true,
     state: {
@@ -12,14 +12,14 @@ export const cadastro = {
     mutations: {
         loading: state => state.load = true,
         usuario: (state, login) => {
-            console.log('chegou aqui ??');
-            
+
             state.nome = login.resultado.nome;
             state.email = login.resultado.email;
             state.load = false
             state.cadastroFalha = null
         },
         cadastroFalha: (state, message) => {
+
             state.cadastroFalha = message
             state.nome = '',
                 state.email = '',
@@ -29,7 +29,7 @@ export const cadastro = {
     actions: {
         async inserir({ commit }, loginData) {
             commit('loading')
-            await axios.post('http://localhost:51847/api/usuario', {
+            await axios.post(`${url}/Usuarios`, {
                 ...loginData
             })
                 .then(response => {
@@ -41,6 +41,8 @@ export const cadastro = {
 
                 })
                 .catch(error => {
+                    console.log('Falha', error);
+
                     commit('cadastroFalha', error.message)
                 })
         }

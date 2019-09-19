@@ -8,7 +8,9 @@ export const login = {
     state: {
         loggingIn: false,
         loginError: null,
-        loginSuccessful: false
+        loginSuccessful: false,
+        nome:'',
+        tipo:''
     },
     mutations: {
         loginStart: state => state.loggingIn = true,
@@ -16,26 +18,34 @@ export const login = {
             state.loggingIn = false;
             state.loginError = errorMessage;
             state.loginSuccessful = !errorMessage;
+            state.nome = '';
+            state.tipo = ''; 
+        },
+        loginSucesso:(state, resultado) =>{
+            state.nome = resultado.nome;
+            state.tipo = 'Atendente';            
         }
     },
     actions: {
-        async doLogin({commit}, loginData) {
-            
+        async doLogin({ commit }, loginData) {
             commit('loginStart');
-            await axios.post(`${url}Usuario/autenticar`, {
+            await axios.post(`${url}/Usuarios/Autenticar`, {
                 ...loginData
             })
                 .then(response => {
-                                        
+
                     if (response.data.status == false)
-                        return commit('loginStop', response.data.msg)
-
-                        localStorage.setItem('dev4jobsForum',JSON.stringify(response.data.resultado))                        
-
+                        return commit('loginStop', response.data.resultado)
+                    
                     commit('loginStop', null)
+
+                    commit('loginSucesso', response.data.resultado)
+
+                    localStorage.setItem('dev4jobsForum', JSON.stringify(response.data.resultado))                    
                 })
                 .catch(error => {
-                    commit('loginStop', error.message)
+                    var arrayMessage = [error.message]
+                    commit('loginStop', arrayMessage)
                 })
         }
     }

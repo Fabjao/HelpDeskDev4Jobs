@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-container>
-      <h1>Tutorial</h1>
-      <span>{{nome}}</span>
+      <h1></h1>
+      <span></span>
     </v-container>
   </div>
 </template>
@@ -14,10 +14,6 @@ export default {
       nome: ""
     };
   },
-  computed: {
-    nomeUsuario() {
-      return this.$store.state.cadastro.nome;
-    }
-  }
+  
 };
 </script>

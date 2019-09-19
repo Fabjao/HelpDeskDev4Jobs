@@ -20,6 +20,54 @@
   </div>
 </template>
 
+
+<script>
+import { mapState, mapActions } from "vuex";
+import store from "@/_store/store.js";
+export default {
+  data() {
+    return {
+      show3: false,
+      email: "fabioatendente@email.com",
+      senha: "aa123456"
+    };
+  },
+  created: function() {
+    if (store.state.login.loginSuccessful) this.$router.push("/home");
+
+    const mail = this.$store.state.cadastro.nome;
+    if (mail != "") this.email = mail;
+  },
+  computed: {
+    ...mapState("login", ["loggingIn", "loginError", "loginSuccessful"])
+  },
+  methods: {
+    ...mapActions("login", ["doLogin"]),
+    async loginSubmit() {
+      if (this.email === "" && this.senha === "")
+        return this.$toast.warning("Preencha os campos", "Alerta", {
+          position: "topRight"
+        });
+
+      await this.doLogin({
+        email: this.email,
+        senha: this.senha
+      });
+      
+      if (this.loginSuccessful) this.$router.push("/home");
+      else {
+        const toast = this.$toast;
+        this.loginError.forEach(function(item, indice, array) {
+          toast.error(item, "Erro", {
+            position: "topRight"
+          });
+        });
+      }
+    }
+  }
+};
+</script>
+
 <style scoped lang="scss">
 .login {
   padding: 1.5rem;
@@ -65,50 +113,3 @@
   }
 }
 </style>
-
-<script>
-import { mapState, mapActions } from "vuex";
-import store from "@/_store/store.js";
-export default {
-  data() {
-    return {
-      show3: false,
-      email: "fabio@email.com",
-      senha: "123456"
-    };
-  },
-  created: function() {
-    if (store.state.login.loginSuccessful) this.$router.push("/home");
-
-    const mail = this.$store.state.cadastro.nome;
-    if (mail != "") this.email = mail;
-  },
-  computed: {
-    ...mapState("login", ["loggingIn", "loginError", "loginSuccessful"])
-  },
-  methods: {
-    ...mapActions("login", ["doLogin"]),
-    async loginSubmit() {
-      if (this.email === "" && this.senha === "")
-        return this.$toast.warning("Preencha os campos", "Alerta", {
-          position: "topRight"
-        });
-
-      await this.doLogin({
-        email: this.email,
-        senha: this.senha
-      });
-
-      if (this.loginSuccessful) this.$router.push("/home");
-      else {
-        const toast = this.$toast;
-        this.loginError.forEach(function(item, indice, array) {
-          toast.error(item, "Erro", {
-            position: "topRight"
-          });
-        });
-      }
-    }
-  }
-};
-</script>

@@ -21,6 +21,7 @@
         class="input-group--focused"
         v-model="usenhaCofirmacao"
       ></v-text-field>
+      <v-select v-model="utipo" :items="items" label="Selecione um tipo de usuário."></v-select>
       <button type="submit">Cadastrar</button>
       <router-link to="/">
         <a>Login</a>
@@ -39,7 +40,9 @@ export default {
       unome: "",
       uemail: "",
       usenha: "",
-      usenhaCofirmacao:""
+      utipo: "",
+      usenhaCofirmacao: "",
+      items: ["cliente", "atendente"]
     };
   },
   created: function() {
@@ -51,21 +54,21 @@ export default {
   methods: {
     ...mapActions("cadastro", ["inserir"]),
     async inserirCadastro() {
-      if (this.uemail === "" && this.usenha === "" && this.unome === "" && this.usenhaCofirmacao === "")
-        return this.$toast.warning("Preencha os campos.", "Alerta", {
-          position: "topRight"
-        });
-
+      
       await this.inserir({
         nome: this.unome,
         email: this.uemail,
         senha: this.usenha,
-        confirmacaoSenha: this.usenhaCofirmacao
+        confirmaSenha: this.usenhaCofirmacao,
+        tipo: this.utipo
       });
 
       if (this.cadastroFalha != null) {
-        return this.$toast.error(this.cadastroFalha, "Erro", {
-          position: "topRight"
+        const toast = this.$toast;
+        this.cadastroFalha.forEach(function(item, indice, array) {
+          toast.error(item, "Erro", {
+            position: "topRight", timeout: 9000
+          });
         });
       } else {
         this.$toast.success("Cadastro efetuado faça o login.", "Ok", {

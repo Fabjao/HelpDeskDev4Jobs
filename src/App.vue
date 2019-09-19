@@ -3,10 +3,16 @@
     <div v-show="mostrarMenu">
       <v-app-bar app>
         <v-toolbar-title class="headline">
-          <router-link class="mr-4" to="/tutorial">Tutorial</router-link>
-          <router-link to="/duvida">Duvidas</router-link>
+          <!-- <router-link class="mr-4" to="/tutorial">Tutorial</router-link>
+          <router-link to="/duvida">Duvidas</router-link>-->
+          Help Desk Dev4Jobs
         </v-toolbar-title>
         <v-spacer></v-spacer>
+        <div :class="colorTipo">
+          <span class="mr-4">{{tipoUsuario}}</span>
+          <span class="mr-4">{{nomeUsuario}}</span>
+        </div>
+
         <v-btn @click="sair">
           <span class="mr-2">Sair</span>
         </v-btn>
@@ -28,6 +34,17 @@ export default {
   computed: {
     mostrarMenu() {
       return this.$store.state.login.loginSuccessful;
+    },
+    nomeUsuario() {
+      return this.$store.state.login.nome;
+    },
+    tipoUsuario() {
+      return this.$store.state.login.tipo;
+    },
+    colorTipo() {
+      return this.$store.state.login.tipo == "Atendente"
+        ? "primary"
+        : "warning";
     }
   },
   methods: {

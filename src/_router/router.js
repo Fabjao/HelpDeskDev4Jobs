@@ -22,16 +22,6 @@ const router = new Router({
       path: '/home',
       name: 'home',
       component: () => import('@/views/Home.vue')
-    },
-    {
-      path: '/tutorial',
-      name: 'tutorial',
-      component: () => import('@/views/Tutorial.vue')
-    },
-    {
-      path: '/duvida',
-      name: 'duvida',
-      component: () => import('@/views/Duvida.vue')
     }
   ]
 })
