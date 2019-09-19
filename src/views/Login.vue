@@ -53,9 +53,13 @@ export default {
         email: this.email,
         senha: this.senha
       });
-      
-      if (this.loginSuccessful) this.$router.push("/home");
-      else {
+
+      if (this.loginSuccessful) {
+        if (this.$store.state.login.tipo == "ATENDENTE")
+          this.$router.push("/atendente");
+        if (this.$store.state.login.tipo == "CLIENTE")
+          this.$router.push("/cliente");
+      } else {
         const toast = this.$toast;
         this.loginError.forEach(function(item, indice, array) {
           toast.error(item, "Erro", {

@@ -9,8 +9,8 @@ export const login = {
         loggingIn: false,
         loginError: null,
         loginSuccessful: false,
-        nome:'',
-        tipo:''
+        nome: '',
+        tipo: ''
     },
     mutations: {
         loginStart: state => state.loggingIn = true,
@@ -19,11 +19,15 @@ export const login = {
             state.loginError = errorMessage;
             state.loginSuccessful = !errorMessage;
             state.nome = '';
-            state.tipo = ''; 
+            state.tipo = '';
         },
-        loginSucesso:(state, resultado) =>{
-            state.nome = resultado.nome;
-            state.tipo = 'Atendente';            
+        loginSucesso: (state, resultado) => {      
+            if (resultado != null) {                
+                state.nome = resultado.nome;
+                state.tipo = resultado.tipo;
+                state.loginSucessful = true;
+                console.log('passou aqui');                
+            }
         }
     },
     actions: {
@@ -36,12 +40,12 @@ export const login = {
 
                     if (response.data.status == false)
                         return commit('loginStop', response.data.resultado)
-                    
+
                     commit('loginStop', null)
 
                     commit('loginSucesso', response.data.resultado)
 
-                    localStorage.setItem('dev4jobsForum', JSON.stringify(response.data.resultado))                    
+                    localStorage.setItem('dev4jobsForum', JSON.stringify(response.data.resultado))
                 })
                 .catch(error => {
                     var arrayMessage = [error.message]

@@ -42,7 +42,7 @@ export default {
       return this.$store.state.login.tipo;
     },
     colorTipo() {
-      return this.$store.state.login.tipo == "Atendente"
+      return this.$store.state.login.tipo == "ATENDENTE"
         ? "primary"
         : "warning";
     }
@@ -50,7 +50,7 @@ export default {
   methods: {
     sair() {
       localStorage.removeItem("dev4jobsForum");
-      this.$router.push("/");
+      this.$router.push("/login");
     }
   }
 };

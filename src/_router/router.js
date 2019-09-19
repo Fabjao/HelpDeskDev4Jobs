@@ -22,7 +22,18 @@ const router = new Router({
       path: '/home',
       name: 'home',
       component: () => import('@/views/Home.vue')
+    },
+    {
+      path: '/atendente',
+      name: 'atendente',
+      component: () => import('@/views/Atendente.vue')
+    },
+    {
+      path: '/cliente',
+      name: 'cliente',
+      component: () => import('@/views/Cliente.vue')
     }
+
   ]
 })
 
@@ -36,11 +47,15 @@ router.beforeEach((to, from, next) => {
   //Verificar se usuario esta logado no sistema
   const isLogado = JSON.parse(localStorage.getItem('dev4jobsForum'))
 
-  store.state.login.loginSuccessful= isLogado == null ? false : true
+  store.state.login.loginSuccessful = isLogado == null ? false : true
+  if(store.state.login.loginSuccessful)
+  store.commit('login/loginSucesso', isLogado)
+
 
   //Verifica se o usuario esta logado ou nao
-  if (authRequired && !store.state.login.loginSuccessful)
-    return next('/');
+  if (!store.state.login.loginSuccessful)
+    if (authRequired && !store.state.login.loginSuccessful)
+      return next('/');
 
   next()
 
