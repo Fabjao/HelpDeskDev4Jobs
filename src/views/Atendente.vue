@@ -18,6 +18,9 @@
             <v-card-text v-show="item == 'Andamento'">
               <ticktsAndamento />
             </v-card-text>
+            <v-card-text v-show="item == 'Concluido'">
+              <ticktsConcluido />
+            </v-card-text>
           </v-card>
         </v-tab-item>
       </v-tabs-items>
@@ -28,26 +31,21 @@
 <script>
 import ticketAberto from "./TicketsAberto";
 import ticktsAndamento from "./TicketsEmAndamento";
+import ticktsConcluido from "./TicketsConcluido";
 export default {
   components: {
     ticketAberto,
-    ticktsAndamento
+    ticktsAndamento,
+    ticktsConcluido
   },
   data() {
     return {
       tab: null,
-      items: ["Aberto", "Andamento"],
+      items: ["Aberto", "Andamento","Concluido"],
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       text2: "tudo em andamento"
     };
-  },
-  created() {
-    console.log("dsadas");
-
-    const isLogado = JSON.parse(localStorage.getItem("dev4jobsForum"));
-    //if (isLogado.tipo != "ATENDENTE")
-    //this.$router.push("/Atendente");
   }
 };
 </script>
