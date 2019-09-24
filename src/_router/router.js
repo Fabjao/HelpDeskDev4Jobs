@@ -32,6 +32,11 @@ const router = new Router({
       path: '/cliente',
       name: 'cliente',
       component: () => import('@/views/Cliente.vue')
+    },
+    {
+      path: '/ticket',
+      name: 'ticket',
+      component: () => import('@/views/Ticket.vue')
     }
 
   ]
@@ -40,7 +45,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
 
   /*Configura as rotas que nao precisam de autorizacao*/
-  const publicPages = ['/', '/cadastro'];
+  const publicPages = ['/', '/cadastro', '/ticket'];
   //Verifica se a rota que o usuario quer precisa ou não de autorizacao
   const authRequired = !publicPages.includes(to.path);
 
@@ -48,8 +53,8 @@ router.beforeEach((to, from, next) => {
   const isLogado = JSON.parse(localStorage.getItem('dev4jobsForum'))
 
   store.state.login.loginSuccessful = isLogado == null ? false : true
-  if(store.state.login.loginSuccessful)
-  store.commit('login/loginSucesso', isLogado)
+  if (store.state.login.loginSuccessful)
+    store.commit('login/loginSucesso', isLogado)
 
 
   //Verifica se o usuario esta logado ou nao

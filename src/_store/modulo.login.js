@@ -26,7 +26,6 @@ export const login = {
                 state.nome = resultado.nome;
                 state.tipo = resultado.tipo;
                 state.loginSucessful = true;
-                console.log('passou aqui');                
             }
         }
     },

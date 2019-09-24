@@ -46,6 +46,7 @@ export default {
     };
   },
   created: function() {
+    //Se ja tiver logado mandar para a pagina home do usuario
     if (store.state.login.loginSuccessful) this.$router.push("/home");
   },
   computed: {

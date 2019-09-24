@@ -32,6 +32,7 @@
 import ticketAberto from "./TicketsAberto";
 import ticktsAndamento from "./TicketsEmAndamento";
 import ticktsConcluido from "./TicketsConcluido";
+import { mapState, mapActions } from "vuex";
 export default {
   components: {
     ticketAberto,
@@ -41,11 +42,48 @@ export default {
   data() {
     return {
       tab: null,
-      items: ["Aberto", "Andamento","Concluido"],
+      items: ["Aberto", "Andamento", "Concluido"],
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       text2: "tudo em andamento"
     };
+  },
+  computed: {
+    ...mapState("ticket", [
+      "load",
+      "falhaCadastro",
+      "numeroTicket",
+      "sucessoCadastro"
+    ])
+  },
+  methods: {
+    ...mapActions("ticket", ["ticketsAbeto","concluido","andamento"]),
+    async submit() {
+      await this.ticketsAbeto({
+        titulo: this.titulo,
+        mensagem: this.mensagem
+      });
+
+      if (this.falhaCadastro != null) {
+        const toast = this.$toast;
+        this.falhaCadastro.forEach(function(item, indice, array) {
+          toast.error(item, "Erro", {
+            position: "topRight",
+            timeout: 9000
+          });
+        });
+      } else {
+        const toast = this.$toast;
+        this.sucessoCadastro.forEach(function(item, indice, array) {
+          toast.success(item, "Ok", {
+            position: "topRight",
+            timeout: 9000
+          });
+        });
+        this.titulo = "";
+        this.mensagem = "";
+      }
+    }
   }
 };
 </script>

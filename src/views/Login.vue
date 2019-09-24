@@ -28,8 +28,8 @@ export default {
   data() {
     return {
       show3: false,
-      email: "fabioatendente@email.com",
-      senha: "aa123456"
+      email: "",
+      senha: ""
     };
   },
   created: function() {
