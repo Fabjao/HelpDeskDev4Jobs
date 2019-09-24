@@ -18,6 +18,8 @@ export const ticket = {
         cadastroFalha: (state, resultado) => {
             state.falhaCadastro = resultado;
             state.load = false;
+
+            console.log('error', resultado);
         },
         cadastroSucesso: (state, resultado) => {
             state.ticketCadastrado = resultado
@@ -41,6 +43,10 @@ export const ticket = {
         ticketEspecifico: (state, resultado) => {
             state.ticketEspecifico = resultado
             state.load = false
+        },
+        respostaCadastrada: (state) => {
+            state.load = false
+            state.falhaCadastro = null
         }
     },
     actions: {
@@ -76,7 +82,7 @@ export const ticket = {
                     if (response.data.status == false)
                         return commit('cadastroFalha', response.data.resultado)
 
-                    const dados = response.data.resultado                
+                    const dados = response.data.resultado
                     return commit('buscaTicket', { status, dados })
 
                 })
@@ -114,8 +120,6 @@ export const ticket = {
                     if (response.data.status == false)
                         return commit('cadastroFalha', response.data.resultado)
 
-                    console.log('response.data.resultado', response.data.resultado);
-
                     return commit('ticketEspecifico', response.data.resultado)
 
                 })
@@ -124,8 +128,8 @@ export const ticket = {
                 })
         },
         async enviarResposta({ commit }, ticketData) {
-            console.log('action ticketData ',ticketData);
-            
+            console.log('action ticketData ', ticketData);
+
             commit('loading')
             await axios.post(`${url}/Respostas`, { ...ticketData },
                 {
@@ -136,10 +140,7 @@ export const ticket = {
                     if (response.data.status == false)
                         return commit('cadastroFalha', response.data.resultado)
 
-                        console.log('resposta', response );
-                        state.load = false
-                        
-                   // return commit('cadastroSucesso', response.data.resultado)
+                    return commit('respostaCadastrada')
 
                 })
                 .catch(error => {

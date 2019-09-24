@@ -1,23 +1,13 @@
 <template>
   <div>
-    <ticket
-      v-for="item in ticketsConcluido"
-      :key="item.numeroTicket"
-      :titulo="item.titulo"
-      :numeroTicket="item.numeroTicket"
-      :texto="item.mensagem"
-    />
+    
   </div>
   
 </template>
 <script>
-import ticket from "./Ticket";
+
 import { mapState, mapActions } from "vuex";
 export default {
-  props: ["tipo"],
-  components: {
-    ticket
-  },
   computed: {
     ...mapState("ticket", ["falhaCadastro", "ticketsConcluido","load"])
   },

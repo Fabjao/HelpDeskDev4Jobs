@@ -26,7 +26,7 @@
         <v-tab-item v-for="item in items" :key="item">
           <v-card flat color="basil">
             <v-card-text v-show="item == 'Andamento'">
-              <ticktsAndamento tipo="cliente" />
+              <ticktsAndamento />
             </v-card-text>
             <v-card-text v-show="item == 'Concluido'">
               <ticktsConcluido />

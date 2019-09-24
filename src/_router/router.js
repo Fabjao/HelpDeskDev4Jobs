@@ -32,11 +32,6 @@ const router = new Router({
       path: '/cliente',
       name: 'cliente',
       component: () => import('@/views/Cliente.vue')
-    },
-    {
-      path: '/ticket',
-      name: 'ticket',
-      component: () => import('@/views/Ticket.vue')
     }
 
   ]
@@ -45,7 +40,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
 
   /*Configura as rotas que nao precisam de autorizacao*/
-  const publicPages = ['/', '/cadastro', '/ticket'];
+  const publicPages = ['/', '/cadastro'];
   //Verifica se a rota que o usuario quer precisa ou não de autorizacao
   const authRequired = !publicPages.includes(to.path);
 
