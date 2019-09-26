@@ -14,6 +14,10 @@ export default {
       nome: ""
     };
   },
-  
+  created() {
+    const usuario = JSON.parse(localStorage.getItem("dev4jobsForum")).tipo;
+    if (usuario == "CLIENTE") this.$router.push("/cliente");
+    else this.$router.push("/atendente");
+  }
 };
 </script>

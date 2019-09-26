@@ -1,25 +1,29 @@
 <template>
-  <v-expansion-panels>
-    <v-expansion-panel v-for="(item,i) in ticketsAberto" :key="i" class="login">
-      <div v-if="load" class="container-loading">
-        <img src="@/assets/loading.gif" alt="Loading Icon" />
-      </div>
-      <v-expansion-panel-header>
-        {{item.titulo}}
-        <span class="text-right">{{item.numeroTicket}}</span>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>        
-        <v-text-field readonly :value="item.mensagem"  outlined></v-text-field>
-        <v-spacer></v-spacer>
-        <div v-show="(item.status ==1 && tipoUsuario =='ATENDENTE')">
-          <v-btn color="primary" @click="pegarTicket(item.numeroTicket)">Tomar Posse</v-btn>
+  <div v-if="statusAberto==true">
+    <v-expansion-panels>
+      <v-expansion-panel v-for="(item,i) in ticketsAberto" :key="i" class="login">
+        <div v-if="load" class="container-loading">
+          <img src="@/assets/loading.gif" alt="Loading Icon" />
         </div>
-        <v-spacer></v-spacer>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+        <v-expansion-panel-header>
+          {{item.titulo}}
+          <span class="text-right">{{item.numeroTicket}}</span>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-text-field readonly :value="item.mensagem" outlined></v-text-field>
+          <v-spacer></v-spacer>
+          <div v-show="(item.status ==1 && tipoUsuario =='ATENDENTE')">
+            <v-btn color="primary" @click="pegarTicket(item.numeroTicket)">Tomar Posse</v-btn>
+          </div>
+          <v-spacer></v-spacer>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </div>
+  <div v-else>
+    <h1>Não tem tickets.</h1>
+  </div>
 </template>
-
 
 <script>
 import { mapState, mapActions } from "vuex";
@@ -30,7 +34,12 @@ export default {
     };
   },
   computed: {
-    ...mapState("ticket", ["falhaCadastro", "ticketsAberto", "load"])
+    ...mapState("ticket", [
+      "falhaCadastro",
+      "ticketsAberto",
+      "load",
+      "statusAberto"
+    ])
   },
   methods: {
     ...mapActions("ticket", ["buscar", "tomarPosse"]),
@@ -38,8 +47,8 @@ export default {
       await this.tomarPosse(numeroTicket);
       await this.buscar("aberto");
     },
-    buscarTicket() {
-      console.log("Bucar Ticket");
+    teste() {
+      console.log("teste");
     }
   },
   created: async function() {

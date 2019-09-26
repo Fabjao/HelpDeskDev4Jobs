@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    v-if="statusConcluido"
+  >
     <v-expansion-panels>
       <v-expansion-panel v-for="(item,i) in ticketsConcluido" :key="i" class="login">
         <div v-if="load" class="container-loading">
@@ -9,7 +11,7 @@
           {{item.titulo}}
           <span class="text-center">
             <v-rating readonly color="red" :value="item.avaliacao"></v-rating>
-          </span>          
+          </span>
           <span class="text-right">{{item.numeroTicket}}</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -25,6 +27,9 @@
       </v-expansion-panel>
     </v-expansion-panels>
   </div>
+  <div v-else>
+    <h1>Você não tem tickets concluído.</h1>
+  </div>
 </template>
 
 <script>
@@ -38,23 +43,20 @@ export default {
     };
   },
   computed: {
-    ...mapState("ticket", [
-      "ticketsConcluido",
-      "load"
-    ]),
+    ...mapState("ticket", ["ticketsConcluido", "load","statusConcluido"]),
     cordoTicket() {
       return responderTicket;
     }
   },
   methods: {
-    ...mapActions("ticket", ["buscar", "buscarTicket","ticketEspecifico"]),
+    ...mapActions("ticket", ["buscar", "buscarTicket", "ticketEspecifico"]),
     async pegarTicket(numeroTicket) {
       await this.buscarTicket(numeroTicket);
     }
   },
   created: async function() {
     //this.tipoUsuario = JSON.parse(localStorage.getItem("dev4jobsForum")).tipo;
-   // await this.buscar("concluido");
+    // await this.buscar("concluido");
   }
 };
 </script>

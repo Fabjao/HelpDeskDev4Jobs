@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="login">
     <v-card color="basil" class="mx-auto">
       <v-card-title class="text-center justify-center py-6">
         <h1 class="font-weight-bold display-3 basil--text">Tickets</h1>
       </v-card-title>
 
-      <v-card class="mx-auto login" width="90%">
+      <v-card class="mx-auto" width="90%">
         <div v-if="load" class="container-loading">
           <img src="@/assets/loading.gif" alt="Loading Icon" />
         </div>
@@ -19,7 +19,7 @@
       </v-card>
 
       <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-        <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+        <v-tab v-for="item in items" :key="item" @click="CarregarItem(item)">{{ item }}</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -70,9 +70,9 @@ export default {
     ])
   },
   created: async function() {
-    await this.buscar("aberto");
-    await this.buscar("andamento");
-    await this.buscar("concluido");
+     await this.buscar("aberto");
+    // await this.buscar("andamento");
+    // await this.buscar("concluido");
   },
   methods: {
     ...mapActions("ticket", ["criar", "buscar"]),
@@ -91,8 +91,6 @@ export default {
           });
         });
       } else {
-        console.log('resposta', this.ticketCadastrado);
-        
         const toast = this.$toast;
         this.ticketCadastrado.forEach(function(item, indice, array) {
           toast.success(item, "Ok", {
@@ -104,6 +102,19 @@ export default {
         this.mensagem = "";
       }
       await this.buscar("aberto");
+    },
+    async CarregarItem(item) {            
+      switch (item) {
+        case "Aberto":
+          await this.buscar("aberto");
+          break;
+        case "Andamento":
+          await this.buscar("andamento");
+          break;
+        case "Concluido":
+          await this.buscar("concluido");
+          break;
+      }
     }
   }
 };

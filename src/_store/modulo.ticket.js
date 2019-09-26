@@ -5,6 +5,9 @@ export const ticket = {
     namespaced: true,
     state: {
         load: false,
+        statusAberto: null,
+        statusAndamento: null,
+        statusConcluido: null,
         falhaCadastro: null,
         ticketsAberto: null,
         ticketsAndamento: null,
@@ -18,27 +21,27 @@ export const ticket = {
         loading: state => state.load = true,
         cadastroFalha: (state, resultado) => {
             state.falhaCadastro = resultado;
+            state.ticketCadastrado =null;
             state.load = false;
-
         },
         cadastroSucesso: (state, resultado) => {
-            console.log('cadastroSucesso', resultado);
-
-            state.ticketCadastrado = resultado
+            state.ticketCadastrado = resultado            
+            state.falhaCadastro = null;
             state.load = false;
         },
         buscaTicket: (state, { status, dados }) => {
-            console.log('buscaticket', status);
-
             switch (status) {
                 case "aberto":
-                    state.ticketsAberto = dados
+                    state.ticketsAberto = dados.resultado
+                    state.statusAberto = dados.status
                     break;
                 case "andamento":
-                    state.ticketsAndamento = dados
+                    state.ticketsAndamento = dados.resultado
+                    state.statusAndamento = dados.status
                     break;
                 case "concluido":
-                    state.ticketsConcluido = dados
+                    state.ticketsConcluido = dados.resultado
+                    state.statusConcluido = dados.status
                     break;
             }
             state.load = false;
@@ -66,7 +69,6 @@ export const ticket = {
                     headers: { 'autorToken': JSON.parse(localStorage.getItem('dev4jobsForum')).tokenUsuario }
                 })
                 .then(response => {
-                    console.log('criando ticket', response);
 
                     if (response.data.status == false)
                         return commit('cadastroFalha', response.data.resultado)
@@ -75,8 +77,6 @@ export const ticket = {
 
                 })
                 .catch(error => {
-                    console.log('Erro criando ticket', error);
-
                     commit('cadastroFalha', error.message)
                 })
         },
@@ -88,8 +88,7 @@ export const ticket = {
                     headers: { 'autorToken': JSON.parse(localStorage.getItem('dev4jobsForum')).tokenUsuario }
                 })
                 .then(response => {
-
-                    const dados = response.data.resultado
+                    const dados = response.data
                     return commit('buscaTicket', { status, dados })
 
                 })
@@ -135,8 +134,6 @@ export const ticket = {
                 })
         },
         async enviarResposta({ commit }, ticketData) {
-
-
             commit('loading')
             await axios.post(`${url}/Respostas`, { ...ticketData },
                 {

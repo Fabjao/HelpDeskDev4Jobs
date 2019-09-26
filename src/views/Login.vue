@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" >
     <div v-if="loggingIn" class="container-loading">
       <img src="@/assets/loading.gif" alt="Loading Icon" />
     </div>
@@ -73,13 +73,27 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .login {
   padding: 1.5rem;
-  width: 400px;
+  width: 350px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   overflow: hidden;
+
+
+  // min-height: 100%;
+  // min-width: 100%;
+
+  // position: fixed;
+  // top: 0px;
+  // left: 0px;
+  // right: -30px;
+
+  // background-size: cover;
+  // background-position: center;
+  //background-image: url(".././assets/suportetecnico.png");
   .container-loading {
     position: absolute;
     top: 0;

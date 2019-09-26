@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    v-if="statusAndamento"
+  >
     <v-expansion-panels>
       <v-expansion-panel v-for="(item,i) in ticketsAndamento" :key="i" class="login">
         <div v-if="load" class="container-loading">
@@ -61,6 +63,9 @@
       </v-dialog>
     </v-row>
   </div>
+  <div v-else>
+    <h1>Não tem tickest em andamento.</h1>
+  </div>
 </template>
 
 <script>
@@ -81,7 +86,8 @@ export default {
       "falhaCadastro",
       "ticketsAndamento",
       "load",
-      "ticketEspecifico"
+      "ticketEspecifico",
+      "statusAndamento"
     ]),
     cordoTicket() {
       return responderTicket;

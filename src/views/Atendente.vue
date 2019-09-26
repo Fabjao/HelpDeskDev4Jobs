@@ -6,7 +6,7 @@
       </v-card-title>
 
       <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-        <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+        <v-tab v-for="item in items" :key="item" @click="CarregarItem(item)">{{ item }}</v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -58,11 +58,14 @@ export default {
   },
   created: async function() {
     await this.buscar("aberto");
-    await this.buscar("andamento");
-    await this.buscar("concluido");
   },
   methods: {
-    ...mapActions("ticket", ["ticketsAbeto", "concluido", "andamento","buscar"]),
+    ...mapActions("ticket", [
+      "ticketsAbeto",
+      "concluido",
+      "andamento",
+      "buscar"
+    ]),
     async submit() {
       await this.ticketsAbeto({
         titulo: this.titulo,
@@ -87,6 +90,19 @@ export default {
         });
         this.titulo = "";
         this.mensagem = "";
+      }
+    },
+    async CarregarItem(item) {
+      switch (item) {
+        case "Aberto":
+          await this.buscar("aberto");
+          break;
+        case "Andamento":
+          await this.buscar("andamento");
+          break;
+        case "Concluido":
+          await this.buscar("concluido");
+          break;
       }
     }
   }
