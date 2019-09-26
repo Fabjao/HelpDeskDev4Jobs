@@ -3,18 +3,17 @@
     <v-expansion-panel v-for="(item,i) in ticketsAberto" :key="i" class="login">
       <div v-if="load" class="container-loading">
         <img src="@/assets/loading.gif" alt="Loading Icon" />
-      </div>      
+      </div>
       <v-expansion-panel-header>
         {{item.titulo}}
         <span class="text-right">{{item.numeroTicket}}</span>
       </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <span>{{item.mensagem}}</span>
+      <v-expansion-panel-content>        
+        <v-text-field readonly :value="item.mensagem"  outlined></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          @click="pegarTicket(item.numeroTicket)"
-        >Tomar Posse</v-btn>
+        <div v-show="(item.status ==1 && tipoUsuario =='ATENDENTE')">
+          <v-btn color="primary" @click="pegarTicket(item.numeroTicket)">Tomar Posse</v-btn>
+        </div>
         <v-spacer></v-spacer>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -23,22 +22,29 @@
 
 
 <script>
-
 import { mapState, mapActions } from "vuex";
-export default {  
+export default {
+  data: () => {
+    return {
+      tipoUsuario: ""
+    };
+  },
   computed: {
-    ...mapState("ticket", ["falhaCadastro", "ticketsAberto","load"])
+    ...mapState("ticket", ["falhaCadastro", "ticketsAberto", "load"])
   },
   methods: {
     ...mapActions("ticket", ["buscar", "tomarPosse"]),
     async pegarTicket(numeroTicket) {
       await this.tomarPosse(numeroTicket);
       await this.buscar("aberto");
-      this.buscar("andamento");
+    },
+    buscarTicket() {
+      console.log("Bucar Ticket");
     }
   },
   created: async function() {
-    await this.buscar("aberto");
+    this.tipoUsuario = JSON.parse(localStorage.getItem("dev4jobsForum")).tipo;
+    // await this.buscar("aberto");
 
     // if (this.falhaCadastro != null) {
     //   const toast = this.$toast;

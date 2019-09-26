@@ -56,8 +56,13 @@ export default {
       "sucessoCadastro"
     ])
   },
+  created: async function() {
+    await this.buscar("aberto");
+    await this.buscar("andamento");
+    await this.buscar("concluido");
+  },
   methods: {
-    ...mapActions("ticket", ["ticketsAbeto","concluido","andamento"]),
+    ...mapActions("ticket", ["ticketsAbeto", "concluido", "andamento","buscar"]),
     async submit() {
       await this.ticketsAbeto({
         titulo: this.titulo,

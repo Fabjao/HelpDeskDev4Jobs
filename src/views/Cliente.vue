@@ -25,6 +25,9 @@
       <v-tabs-items v-model="tab">
         <v-tab-item v-for="item in items" :key="item">
           <v-card flat color="basil">
+            <v-card-text v-show="item == 'Aberto'">
+              <ticketAberto />
+            </v-card-text>
             <v-card-text v-show="item == 'Andamento'">
               <ticktsAndamento />
             </v-card-text>
@@ -39,20 +42,22 @@
 </template>
 
 <script>
+import ticketAberto from "./TicketsAberto";
 import ticktsAndamento from "./TicketsEmAndamento";
 import ticktsConcluido from "./TicketsConcluido";
 import { mapState, mapActions } from "vuex";
 export default {
   components: {
     ticktsAndamento,
-    ticktsConcluido
+    ticktsConcluido,
+    ticketAberto
   },
   data() {
     return {
       tab: null,
       titulo: "",
       mensagem: "",
-      items: ["Andamento", "Concluido"]
+      items: ["Aberto", "Andamento", "Concluido"]
     };
   },
   computed: {
@@ -64,8 +69,13 @@ export default {
       "ticketCadastrado"
     ])
   },
+  created: async function() {
+    await this.buscar("aberto");
+    await this.buscar("andamento");
+    await this.buscar("concluido");
+  },
   methods: {
-    ...mapActions("ticket", ["criar","buscar"]),
+    ...mapActions("ticket", ["criar", "buscar"]),
     async submit() {
       await this.criar({
         titulo: this.titulo,
@@ -81,6 +91,8 @@ export default {
           });
         });
       } else {
+        console.log('resposta', this.ticketCadastrado);
+        
         const toast = this.$toast;
         this.ticketCadastrado.forEach(function(item, indice, array) {
           toast.success(item, "Ok", {
@@ -89,9 +101,9 @@ export default {
           });
         });
         this.titulo = "";
-        this.mensagem = "";        
+        this.mensagem = "";
       }
-      await this.buscar("andamento");
+      await this.buscar("aberto");
     }
   }
 };
