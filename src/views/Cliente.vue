@@ -1,44 +1,46 @@
 <template>
-  <div class="login">
-    <v-card color="basil" class="mx-auto">
-      <v-card-title class="text-center justify-center py-6">
-        <h1 class="font-weight-bold display-3 basil--text">Tickets</h1>
-      </v-card-title>
+  
+    <div class="login back">
+      <v-card color="basil" class="mx-auto back">
+        <v-card-title class="text-center justify-center py-6">
+          <h1 class="font-weight-bold display-3 basil--text">Tickets</h1>
+        </v-card-title>
 
-      <v-card class="mx-auto" width="90%">
-        <div v-if="load" class="container-loading">
-          <img src="@/assets/loading.gif" alt="Loading Icon" />
-        </div>
-        <v-flex>
-          <v-text-field v-model="titulo" label="Titulo"></v-text-field>
-        </v-flex>
-        <v-flex>
-          <v-textarea label="Mensagem" v-model="mensagem"></v-textarea>
-        </v-flex>
-        <v-btn color="primary" @click="submit">Registrar</v-btn>
+        <v-card class="mx-auto pl-5 pr-5 pb-5 pt-5" width="90%">
+          <div v-if="load" class="container-loading">
+            <img src="@/assets/loading.gif" alt="Loading Icon" />
+          </div>
+          <v-flex>
+            <v-text-field v-model="titulo" label="Titulo"></v-text-field>
+          </v-flex>
+          <v-flex>
+            <v-textarea label="Mensagem" v-model="mensagem"></v-textarea>
+          </v-flex>
+          <v-btn color="primary" @click="submit">Registrar</v-btn>
+        </v-card>
+
+        <v-tabs v-model="tab" background-color="transparent" color="basil" grow >
+          <v-tab v-for="item in items" :key="item" @click="CarregarItem(item)">{{ item }}</v-tab>
+        </v-tabs>
+
+        <v-tabs-items v-model="tab" >
+          <v-tab-item v-for="item in items" :key="item">
+            <v-card flat color="basil">
+              <v-card-text v-show="item == 'Aberto'">
+                <ticketAberto />
+              </v-card-text>
+              <v-card-text v-show="item == 'Andamento'">
+                <ticktsAndamento />
+              </v-card-text>
+              <v-card-text v-show="item == 'Concluido'">
+                <ticktsConcluido />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
       </v-card>
-
-      <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
-        <v-tab v-for="item in items" :key="item" @click="CarregarItem(item)">{{ item }}</v-tab>
-      </v-tabs>
-
-      <v-tabs-items v-model="tab">
-        <v-tab-item v-for="item in items" :key="item">
-          <v-card flat color="basil">
-            <v-card-text v-show="item == 'Aberto'">
-              <ticketAberto />
-            </v-card-text>
-            <v-card-text v-show="item == 'Andamento'">
-              <ticktsAndamento />
-            </v-card-text>
-            <v-card-text v-show="item == 'Concluido'">
-              <ticktsConcluido />
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card>
-  </div>
+    </div>
+  
 </template>
 
 <script>
@@ -77,6 +79,8 @@ export default {
   methods: {
     ...mapActions("ticket", ["criar", "buscar"]),
     async submit() {
+      console.log('this.mensagem', this.mensagem);
+      
       await this.criar({
         titulo: this.titulo,
         mensagem: this.mensagem
@@ -101,18 +105,18 @@ export default {
         this.titulo = "";
         this.mensagem = "";
       }
-      await this.buscar({ status: "aberto"});
+      await this.buscar({ status: "aberto" });
     },
-    async CarregarItem(item) {            
+    async CarregarItem(item) {
       switch (item) {
         case "Aberto":
-          await this.buscar({ status: "aberto"});
+          await this.buscar({ status: "aberto" });
           break;
         case "Andamento":
-          await this.buscar({ status: "andamento"});
+          await this.buscar({ status: "andamento" });
           break;
         case "Concluido":
-          await this.buscar({ status: "concluido"});
+          await this.buscar({ status: "concluido" });
           break;
       }
     }
@@ -124,7 +128,14 @@ export default {
 
 
 <style scoped lang="scss">
+.back {
+  min-height: 100%;
+  min-width: 100%;
+  background-size: cover;
+  background-image: url(".././assets/degrade.jpg");
+}
 .login {
+  background-color: lightgray;
   .container-loading {
     position: absolute;
     top: 0;

@@ -18,10 +18,12 @@
         <v-expansion-panel-content>
           <span>{{item.mensagem}}</span>
           <div v-for="(ticket) in ticketEspecifico.lstRespostas" :key="ticket.id">
+            <!-- <v-spacer></v-spacer>             -->
+            <span :class="(ticket.usuario.tipo =='CLIENTE') ? 'warning': 'info'">{{ticket.usuario.tipo}} - {{ticket.usuario.nome}} - {{ticket.dataCadastro}}</span>
             <v-spacer></v-spacer>
-            <!-- <pre>{{ticket}}</pre> -->
-            <span>{{ticket.usuario.tipo}} - {{ticket.usuario.nome}}</span> |
             <span>{{ticket.mensagem}}</span>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
           </div>
 
           <v-flex>
@@ -109,7 +111,7 @@ export default {
         mensagem: this.mensagem,
         ticketId: guidTicket
       });
-      
+
       if (this.falhaCadastro != null) {
         const toast = this.$toast;
         this.falhaCadastro.forEach(function(item, indice, array) {

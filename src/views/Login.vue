@@ -1,22 +1,25 @@
 <template>
-  <div class="login" >
-    <div v-if="loggingIn" class="container-loading">
-      <img src="@/assets/loading.gif" alt="Loading Icon" />
+  <div class="back">
+    <div class="login">
+      <div v-if="loggingIn" class="container-loading">
+        <img src="@/assets/loading.gif" alt="Loading Icon" />
+      </div>
+      <form @submit.prevent="loginSubmit">
+        <h1 class="text-center">Login</h1>
+        <v-text-field v-model="email" label="E-mail"></v-text-field>
+        <v-text-field
+          :type="show3 ? 'text' : 'password'"
+          name="input-10-2"
+          label="Senha"
+          class="input-group--focused"
+          v-model="senha"
+        ></v-text-field>
+        <button type="submit">Login</button>
+        <router-link to="/cadastro">
+          <a>Registre</a>
+        </router-link>
+      </form>
     </div>
-    <form @submit.prevent="loginSubmit">
-      <v-text-field v-model="email" label="E-mail"></v-text-field>
-      <v-text-field
-        :type="show3 ? 'text' : 'password'"
-        name="input-10-2"
-        label="Senha"
-        class="input-group--focused"
-        v-model="senha"
-      ></v-text-field>
-      <button type="submit">Login</button>
-      <router-link to="/cadastro">
-        <a>Registre</a>
-      </router-link>
-    </form>
   </div>
 </template>
 
@@ -73,7 +76,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.back {
+  min-height: 100%;
+  min-width: 100%;
 
+  // position: fixed;
+  // top: 0px;
+  // left: 0px;
+  // right: -30px;
+
+  background-size: cover;
+  // background-position: center;
+  background-image: url(".././assets/suportetecnico.png");
+}
 .login {
   padding: 1.5rem;
   width: 350px;
@@ -81,16 +96,13 @@ export default {
   margin-right: auto;
   position: relative;
   overflow: hidden;
-
-
+  background-color: lightgray;
   // min-height: 100%;
   // min-width: 100%;
-
   // position: fixed;
   // top: 0px;
   // left: 0px;
   // right: -30px;
-
   // background-size: cover;
   // background-position: center;
   //background-image: url(".././assets/suportetecnico.png");
@@ -120,8 +132,8 @@ export default {
     }
     button {
       padding: 0.5rem;
-      background-color: lightgray;
-      border: 1px solid gray;
+      background-color: darkturquoise;
+      border: 1px solid blueviolet;
       border-radius: 3px;
       cursor: pointer;
       &:hover {

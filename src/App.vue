@@ -39,8 +39,8 @@ export default {
       return this.$store.state.login.nome;
     },
     tipoUsuario() {
-      console.log('this.$store.state.login.tipo',this.$store.state.login.tipo);
-      
+      console.log("this.$store.state.login.tipo", this.$store.state.login.tipo);
+
       return this.$store.state.login.tipo;
     },
     colorTipo() {

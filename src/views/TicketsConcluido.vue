@@ -10,19 +10,23 @@
         </div>
         <v-expansion-panel-header class="success" @click="pegarTicket(item.numeroTicket)">
           {{item.titulo}}
-          <span class="text-center">
-            <v-rating readonly color="red" :value="item.avaliacao"></v-rating>
-          </span>
+          <v-layout justify-center>
+            <span>
+              <v-rating readonly color="red" :value="item.avaliacao"></v-rating>
+            </span>
+          </v-layout>
           <span class="text-right">{{item.numeroTicket}}</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <span>{{item.mensagem}}</span>
           <div v-for="(ticket) in ticketEspecifico.lstRespostas" :key="ticket.id">
+            <span
+              :class="(ticket.usuario.tipo =='CLIENTE') ? 'warning': 'info'"
+            >{{ticket.usuario.tipo}} - {{ticket.usuario.nome}} - {{ticket.dataCadastro}}</span>
             <v-spacer></v-spacer>
-            <!-- <pre>{{ticket}}</pre> -->
-            <!-- <v-text-field readonly :value="ticket.mensagem" :label="ticket.usuario.tipo - ticket.usuario.nome" outlined></v-text-field> -->
-            <span>{{ticket.usuario.tipo}} - {{ticket.usuario.nome}}</span> |
             <span>{{ticket.mensagem}}</span>
+            <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
           </div>
           <v-spacer></v-spacer>
         </v-expansion-panel-content>

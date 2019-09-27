@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <v-card color="basil">
+  <div class="back">
+    <v-card color="basil" class="back">
       <v-card-title class="text-center justify-center py-6">
-        <h1 class="font-weight-bold display-3 basil--text">TICKETS</h1>
+        <h1 class="font-weight-bold display-3 basil--text">Tickets</h1>
       </v-card-title>
 
       <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
@@ -108,3 +108,12 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+.back {
+  min-height: 100%;
+  min-width: 100%;
+  background-size: cover;
+  background-image: url(".././assets/degrade.jpg");
+}
+</style>

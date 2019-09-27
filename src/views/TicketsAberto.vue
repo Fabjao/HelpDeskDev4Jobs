@@ -13,7 +13,9 @@
           <span class="text-right">{{item.numeroTicket}}</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-text-field readonly :value="item.mensagem" outlined></v-text-field>
+          <!-- <v-text-field readonly :value="item.mensagem" outlined></v-text-field> -->
+          <!-- <v-textarea readonly :value="item.mensagem" outlined ></v-textarea> -->
+           <span>{{item.mensagem}}</span>
           <v-spacer></v-spacer>
           <div v-show="(item.status ==1 && tipoUsuario =='ATENDENTE')">
             <v-btn color="primary" @click="pegarTicket(item.numeroTicket)">Tomar Posse</v-btn>

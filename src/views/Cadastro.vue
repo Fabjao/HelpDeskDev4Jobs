@@ -1,32 +1,34 @@
 <template>
-  <div class="login">
-    <div v-if="load" class="container-loading">
-      <img src="@/assets/loading.gif" alt="Loading Icon" />
+  <div class="back">
+    <div class="login">
+      <div v-if="load" class="container-loading">
+        <img src="@/assets/loading.gif" alt="Loading Icon" />
+      </div>
+      <form @submit.prevent="inserirCadastro">
+        <h1 class="text-center">Cadastro</h1>
+        <v-text-field v-model="unome" label="Nome"></v-text-field>
+        <v-text-field v-model="uemail" label="E-mail"></v-text-field>
+        <v-text-field
+          :type="show3 ? 'text' : 'password'"
+          name="input-10-2"
+          label="Senha"
+          class="input-group--focused"
+          v-model="usenha"
+        ></v-text-field>
+        <v-text-field
+          :type="show3 ? 'text' : 'password'"
+          name="input-10-2"
+          label="Confirmação Senha"
+          class="input-group--focused"
+          v-model="usenhaCofirmacao"
+        ></v-text-field>
+        <v-select v-model="utipo" :items="items" label="Selecione um tipo de usuário."></v-select>
+        <button type="submit">Cadastrar</button>
+        <router-link to="/">
+          <a>Login</a>
+        </router-link>
+      </form>
     </div>
-    <form @submit.prevent="inserirCadastro">
-      <h1>Cadastro</h1>
-      <v-text-field v-model="unome" label="Nome"></v-text-field>
-      <v-text-field v-model="uemail" label="E-mail"></v-text-field>
-      <v-text-field
-        :type="show3 ? 'text' : 'password'"
-        name="input-10-2"
-        label="Senha"
-        class="input-group--focused"
-        v-model="usenha"
-      ></v-text-field>
-      <v-text-field
-        :type="show3 ? 'text' : 'password'"
-        name="input-10-2"
-        label="Confirmação Senha"
-        class="input-group--focused"
-        v-model="usenhaCofirmacao"
-      ></v-text-field>
-      <v-select v-model="utipo" :items="items" label="Selecione um tipo de usuário."></v-select>
-      <button type="submit">Cadastrar</button>
-      <router-link to="/">
-        <a>Login</a>
-      </router-link>
-    </form>
   </div>
 </template>
 
@@ -47,7 +49,7 @@ export default {
   },
   created: function() {
     //Se ja tiver logado mandar para a pagina home do usuario
-   // if (store.state.login.loginSuccessful) this.$router.push("/home");
+    // if (store.state.login.loginSuccessful) this.$router.push("/home");
   },
   computed: {
     ...mapState("cadastro", ["email", "nome", "load", "cadastroFalha"])
@@ -55,7 +57,6 @@ export default {
   methods: {
     ...mapActions("cadastro", ["inserir"]),
     async inserirCadastro() {
-      
       await this.inserir({
         nome: this.unome,
         email: this.uemail,
@@ -68,7 +69,8 @@ export default {
         const toast = this.$toast;
         this.cadastroFalha.forEach(function(item, indice, array) {
           toast.error(item, "Erro", {
-            position: "topRight", timeout: 9000
+            position: "topRight",
+            timeout: 9000
           });
         });
       } else {
@@ -83,13 +85,27 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.back {
+  min-height: 100%;
+  min-width: 100%;
+
+  // position: fixed;
+  // top: 0px;
+  // left: 0px;
+  // right: -30px;
+
+  background-size: cover;
+  // background-position: center;
+  background-image: url(".././assets/suportetecnico.png");
+}
 .login {
   padding: 1.5rem;
-  width: 400px;
+  width: 350px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   overflow: hidden;
+  background-color:lightgray;
   .container-loading {
     position: absolute;
     top: 0;
@@ -116,8 +132,8 @@ export default {
     }
     button {
       padding: 0.5rem;
-      background-color: lightgray;
-      border: 1px solid gray;
+      background-color: darkturquoise;
+      border: 1px solid blueviolet;
       border-radius: 3px;
       cursor: pointer;
       &:hover {

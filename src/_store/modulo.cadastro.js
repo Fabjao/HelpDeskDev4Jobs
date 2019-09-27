@@ -33,6 +33,7 @@ export const cadastro = {
                 ...loginData
             })
                 .then(response => {
+console.log('response', response);
 
                     if (response.data.status == false)
                         return commit('cadastroFalha', response.data.resultado)
