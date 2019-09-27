@@ -20,6 +20,7 @@
           <div v-for="(ticket) in ticketEspecifico.lstRespostas" :key="ticket.id">
             <v-spacer></v-spacer>
             <!-- <pre>{{ticket}}</pre> -->
+            <!-- <v-text-field readonly :value="ticket.mensagem" :label="ticket.usuario.tipo - ticket.usuario.nome" outlined></v-text-field> -->
             <span>{{ticket.usuario.tipo}} - {{ticket.usuario.nome}}</span> |
             <span>{{ticket.mensagem}}</span>
           </div>
@@ -45,17 +46,19 @@ export default {
     };
   },
   computed: {
-    ...mapState("ticket", ["ticketsConcluido", "load", "statusConcluido","paginacaoConcluido"]),
+    ...mapState("ticket", [
+      "ticketsConcluido",
+      "load",
+      "statusConcluido",
+      "paginacaoConcluido",
+      "ticketEspecifico"
+    ]),
     cordoTicket() {
       return responderTicket;
     }
   },
   methods: {
-    ...mapActions("ticket", [
-      "buscar",
-      "buscarTicket",
-      "ticketEspecifico"
-    ]),
+    ...mapActions("ticket", ["buscar", "buscarTicket"]),
     async pegarTicket(numeroTicket) {
       await this.buscarTicket(numeroTicket);
     },

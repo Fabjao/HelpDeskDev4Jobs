@@ -43,7 +43,7 @@ export const ticket = {
                     state.ticketsAberto = dados.resultado
                     state.statusAberto = dados.status
                     state.paginacaoAberto = dados.paginacao.totalPaginas
-                    
+
                     break;
                 case "andamento":
                     state.ticketsAndamento = dados.resultado
@@ -64,7 +64,7 @@ export const ticket = {
         },
         respostaCadastrada: (state) => {
             state.load = false
-            //state.falhaCadastro = null
+            state.falhaCadastro = null
         },
         ticketEncerrado: (state, resultado) => {
             state.load = false
@@ -154,6 +154,7 @@ export const ticket = {
                     headers: { 'autorToken': JSON.parse(localStorage.getItem('dev4jobsForum')).tokenUsuario }
                 })
                 .then(response => {
+                    console.log('Respota response', response);
 
                     if (response.data.status == false)
                         return commit('cadastroFalha', response.data.resultado)
@@ -162,6 +163,8 @@ export const ticket = {
 
                 })
                 .catch(error => {
+                    console.log('resposta errror', error);
+
                     commit('cadastroFalha', error.message)
                 })
         },

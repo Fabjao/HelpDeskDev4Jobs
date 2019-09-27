@@ -51,7 +51,7 @@ export default {
     ...mapActions("ticket", ["buscar", "tomarPosse"]),
     async pegarTicket(numeroTicket) {
       await this.tomarPosse(numeroTicket);
-      await this.buscar("aberto");
+      await this.buscar({ status: "aberto"});
     },
    async paginacao(pagina) {
       await this.buscar({status:"aberto",numeroPagina:pagina});

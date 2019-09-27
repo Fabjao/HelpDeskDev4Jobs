@@ -101,18 +101,18 @@ export default {
         this.titulo = "";
         this.mensagem = "";
       }
-      await this.buscar("aberto");
+      await this.buscar({ status: "aberto"});
     },
     async CarregarItem(item) {            
       switch (item) {
         case "Aberto":
-          await this.buscar("aberto");
+          await this.buscar({ status: "aberto"});
           break;
         case "Andamento":
-          await this.buscar("andamento");
+          await this.buscar({ status: "andamento"});
           break;
         case "Concluido":
-          await this.buscar("concluido");
+          await this.buscar({ status: "concluido"});
           break;
       }
     }

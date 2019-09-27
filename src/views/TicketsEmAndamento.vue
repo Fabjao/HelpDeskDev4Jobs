@@ -23,24 +23,22 @@
             <span>{{ticket.usuario.tipo}} - {{ticket.usuario.nome}}</span> |
             <span>{{ticket.mensagem}}</span>
           </div>
-          <div
-            v-show="(item.status ==3 && tipoUsuario =='ATENDENTE') || (item.status ==2 && tipoUsuario =='CLIENTE')"
-          >
-            <v-flex>
-              <v-textarea label="Mensagem" v-model="mensagem"></v-textarea>
-            </v-flex>
 
-            <v-btn color="primary" @click="resposta(item.id,item.numeroTicket)">Responder</v-btn>
+          <v-flex>
+            <v-textarea label="Mensagem" v-model="mensagem"></v-textarea>
+          </v-flex>
 
-            <v-btn
-              class="ml-3"
-              right
-              v-show="(item.status ==2 && tipoUsuario =='CLIENTE')"
-              color="primary"
-              dark
-              @click.stop="abrirEncerramento(item.id)"
-            >Encerrar Chamado</v-btn>
-          </div>
+          <v-btn color="primary" @click="resposta(item.id,item.numeroTicket)">Responder</v-btn>
+
+          <v-btn
+            class="ml-3"
+            right
+            v-show="(tipoUsuario =='CLIENTE')"
+            color="primary"
+            dark
+            @click.stop="abrirEncerramento(item.id)"
+          >Encerrar Chamado</v-btn>
+
           <v-spacer></v-spacer>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -111,19 +109,19 @@ export default {
         mensagem: this.mensagem,
         ticketId: guidTicket
       });
-
+      
       if (this.falhaCadastro != null) {
         const toast = this.$toast;
         this.falhaCadastro.forEach(function(item, indice, array) {
           toast.error(item, "Erro", {
             position: "topRight",
-            timeout: 9000
+            timeout: 6000
           });
         });
       }
 
       this.mensagem = "";
-      await this.buscar("andamento");
+      await this.buscar({ status: "andamento" });
       await this.buscarTicket(numeroTicket);
     },
     abrirEncerramento(guid) {
@@ -146,8 +144,8 @@ export default {
           });
         });
       }
-      await this.buscar("andamento");
-      await this.buscar("concluido");
+      await this.buscar({ status: "andamento" });
+
       this.dialog = false;
     },
     async paginacao(pagina) {
