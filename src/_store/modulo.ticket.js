@@ -15,17 +15,25 @@ export const ticket = {
         ticketEspecifico: { lstRespostas: [] },
         numeroTicket: '',
         ticketCadastrado: null,
-        ticketConcluido: null
+        ticketConcluido: null,
+        paginacaoAberto: null,
+        paginacaoAndamento: null,
+        paginacaoConcluido: null
+    },
+    getters: {
+        quantidadeRegistroAberto: state => {
+            return state.paginacaoAberto
+        }
     },
     mutations: {
         loading: state => state.load = true,
         cadastroFalha: (state, resultado) => {
             state.falhaCadastro = resultado;
-            state.ticketCadastrado =null;
+            state.ticketCadastrado = null;
             state.load = false;
         },
         cadastroSucesso: (state, resultado) => {
-            state.ticketCadastrado = resultado            
+            state.ticketCadastrado = resultado
             state.falhaCadastro = null;
             state.load = false;
         },
@@ -34,14 +42,18 @@ export const ticket = {
                 case "aberto":
                     state.ticketsAberto = dados.resultado
                     state.statusAberto = dados.status
+                    state.paginacaoAberto = dados.paginacao.totalPaginas
+                    
                     break;
                 case "andamento":
                     state.ticketsAndamento = dados.resultado
                     state.statusAndamento = dados.status
+                    state.paginacaoAndamento = dados.paginacao.totalPaginas
                     break;
                 case "concluido":
                     state.ticketsConcluido = dados.resultado
                     state.statusConcluido = dados.status
+                    state.paginacaoConcluido = dados.paginacao.totalPaginas
                     break;
             }
             state.load = false;
@@ -80,10 +92,12 @@ export const ticket = {
                     commit('cadastroFalha', error.message)
                 })
         },
-        async buscar({ commit }, status) {
+        async buscar({ commit }, { status, numeroPagina, quantidadePagina }) {
             commit('loading')
+            if (numeroPagina === undefined) numeroPagina = 1;
+            if (quantidadePagina === undefined) quantidadePagina = 10;
 
-            await axios.get(`${url}/Tickets/Todos/${status}`,
+            await axios.get(`${url}/Tickets/Todos/${status}?numeroPagina=${numeroPagina}&quantidadePagina=${quantidadePagina}`,
                 {
                     headers: { 'autorToken': JSON.parse(localStorage.getItem('dev4jobsForum')).tokenUsuario }
                 })

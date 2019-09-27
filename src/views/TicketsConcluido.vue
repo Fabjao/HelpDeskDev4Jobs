@@ -1,7 +1,8 @@
 <template>
-  <div
-    v-if="statusConcluido"
-  >
+  <div v-if="statusConcluido">
+    <div class="text-center">
+      <v-pagination v-model="pagina" :length="paginacaoConcluido" circle @input="paginacao"></v-pagination>
+    </div>
     <v-expansion-panels>
       <v-expansion-panel v-for="(item,i) in ticketsConcluido" :key="i" class="login">
         <div v-if="load" class="container-loading">
@@ -39,24 +40,31 @@ export default {
     return {
       mensagem: "",
       responderTicket: "",
-      dialog: false
+      dialog: false,
+      pagina: 1
     };
   },
   computed: {
-    ...mapState("ticket", ["ticketsConcluido", "load","statusConcluido"]),
+    ...mapState("ticket", ["ticketsConcluido", "load", "statusConcluido","paginacaoConcluido"]),
     cordoTicket() {
       return responderTicket;
     }
   },
   methods: {
-    ...mapActions("ticket", ["buscar", "buscarTicket", "ticketEspecifico"]),
+    ...mapActions("ticket", [
+      "buscar",
+      "buscarTicket",
+      "ticketEspecifico"
+    ]),
     async pegarTicket(numeroTicket) {
       await this.buscarTicket(numeroTicket);
+    },
+    async paginacao(pagina) {
+      await this.buscar({ status: "concluido", numeroPagina: pagina });
     }
   },
   created: async function() {
-    //this.tipoUsuario = JSON.parse(localStorage.getItem("dev4jobsForum")).tipo;
-    // await this.buscar("concluido");
+    await this.buscar({ status: "concluido" });
   }
 };
 </script>

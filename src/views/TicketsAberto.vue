@@ -1,5 +1,8 @@
 <template>
-  <div v-if="statusAberto==true">
+  <div v-if="statusAberto">    
+    <div class="text-center">
+      <v-pagination v-model="pagina" :length="paginacaoAberto" circle @input="paginacao"></v-pagination>
+    </div>
     <v-expansion-panels>
       <v-expansion-panel v-for="(item,i) in ticketsAberto" :key="i" class="login">
         <div v-if="load" class="container-loading">
@@ -30,7 +33,9 @@ import { mapState, mapActions } from "vuex";
 export default {
   data: () => {
     return {
-      tipoUsuario: ""
+      tipoUsuario: "",
+      pagina: 1,
+      tamanhoPaginacao: 2
     };
   },
   computed: {
@@ -38,7 +43,8 @@ export default {
       "falhaCadastro",
       "ticketsAberto",
       "load",
-      "statusAberto"
+      "statusAberto",
+      "paginacaoAberto"
     ])
   },
   methods: {
@@ -47,12 +53,14 @@ export default {
       await this.tomarPosse(numeroTicket);
       await this.buscar("aberto");
     },
-    teste() {
-      console.log("teste");
+   async paginacao(pagina) {
+      await this.buscar({status:"aberto",numeroPagina:pagina});
     }
   },
   created: async function() {
+    await this.buscar({status:"aberto"});
     this.tipoUsuario = JSON.parse(localStorage.getItem("dev4jobsForum")).tipo;
+
     // await this.buscar("aberto");
 
     // if (this.falhaCadastro != null) {

@@ -70,7 +70,7 @@ export default {
     ])
   },
   created: async function() {
-     await this.buscar("aberto");
+    // await this.buscar("aberto");
     // await this.buscar("andamento");
     // await this.buscar("concluido");
   },

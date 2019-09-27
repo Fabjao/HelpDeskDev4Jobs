@@ -1,7 +1,8 @@
 <template>
-  <div
-    v-if="statusAndamento"
-  >
+  <div v-if="statusAndamento">
+    <div class="text-center">
+      <v-pagination v-model="page" :length="paginacaoAndamento" circle @input="paginacao"></v-pagination>
+    </div>
     <v-expansion-panels>
       <v-expansion-panel v-for="(item,i) in ticketsAndamento" :key="i" class="login">
         <div v-if="load" class="container-loading">
@@ -78,7 +79,8 @@ export default {
       tipoUsuario: "",
       responderTicket: "",
       dialog: false,
-      rating: 0
+      rating: 0,
+      page: 1
     };
   },
   computed: {
@@ -87,7 +89,8 @@ export default {
       "ticketsAndamento",
       "load",
       "ticketEspecifico",
-      "statusAndamento"
+      "statusAndamento",
+      "paginacaoAndamento"
     ]),
     cordoTicket() {
       return responderTicket;
@@ -108,8 +111,6 @@ export default {
         mensagem: this.mensagem,
         ticketId: guidTicket
       });
-
-      console.log("this.falhaCadastro", this.falhaCadastro);
 
       if (this.falhaCadastro != null) {
         const toast = this.$toast;
@@ -148,11 +149,14 @@ export default {
       await this.buscar("andamento");
       await this.buscar("concluido");
       this.dialog = false;
+    },
+    async paginacao(pagina) {
+      await this.buscar({ status: "andamento", numeroPagina: pagina });
     }
   },
   created: async function() {
     this.tipoUsuario = JSON.parse(localStorage.getItem("dev4jobsForum")).tipo;
-    await this.buscar("andamento");
+    await this.buscar({ status: "andamento" });
 
     // if (this.falhaCadastro != null) {
     //   const toast = this.$toast;
